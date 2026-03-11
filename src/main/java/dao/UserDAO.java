@@ -12,7 +12,7 @@ public class UserDAO {
     public User login(String email, String password) {
 
         User user = null;
-
+        
         try {
 
             Connection conn = DBConnection.getConnection();
@@ -42,5 +42,35 @@ public class UserDAO {
         }
 
         return user;
+    }
+    
+    public boolean register(User user) {
+
+        boolean status = false;
+
+        try {
+
+            Connection conn = DBConnection.getConnection();
+
+            String sql = "INSERT INTO users(name,email,password,role) VALUES(?,?,?,?)";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getRole());
+
+            int rows = ps.executeUpdate();
+
+            if(rows > 0){
+                status = true;
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return status;
     }
 }
