@@ -44,6 +44,7 @@ public class UserDAO {
         return user;
     }
     
+    
     public boolean register(User user) {
 
         boolean status = false;
