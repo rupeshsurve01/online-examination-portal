@@ -25,12 +25,14 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-            response.sendRedirect("dashboard.jsp");
+            if(user.getRole().equals("admin")){
+                response.sendRedirect("admin-dashboard.jsp");
+            } else {
+                response.sendRedirect("student-dashboard.jsp");
+            }
 
         } else {
-
             response.sendRedirect("login.jsp?error=invalid");
-
         }
     }
 }
