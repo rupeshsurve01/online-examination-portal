@@ -39,8 +39,7 @@ for(Exam exam : exams){
 <td><%= exam.getTitle() %></td>
 <td><%= exam.getDuration() %> minutes</td>
 <td>
-<a href="#">Start Exam</a>
-</td>
+<a href="start-exam?examId=<%= exam.getId() %>">Start Exam</a></td>
 </tr>
 
 <%
