@@ -1,21 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="model.User" %>
-
-<%
-User user = (User) session.getAttribute("user");
-
-if(user == null){
-    response.sendRedirect("login.jsp");
-    return;
-}
-%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Student Dashboard</title>
+<title>Exam Result</title>
 
 <style>
 
@@ -35,10 +25,6 @@ padding:15px 30px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-}
-
-.header h2{
-font-size:22px;
 }
 
 .header a{
@@ -83,44 +69,41 @@ background:#2c3e50;
 flex:1;
 padding:40px;
 background:#f4f6f9;
-}
-
-.welcome{
-margin-bottom:30px;
-font-size:22px;
-color:#333;
-}
-
-/* DASHBOARD CARDS */
-
-.cards{
 display:flex;
-gap:20px;
+justify-content:center;
+align-items:center;
 }
 
-.card{
+/* RESULT CARD */
+
+.result-card{
 background:white;
-padding:30px;
+padding:40px;
 border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-flex:1;
 text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+width:350px;
 }
 
-.card h3{
-margin-bottom:15px;
+.result-card h2{
+margin-bottom:20px;
 }
 
-.card a{
+.score{
+font-size:40px;
+color:#27ae60;
+margin-bottom:20px;
+}
+
+.btn{
 text-decoration:none;
 background:#3498db;
 color:white;
 padding:10px 20px;
 border-radius:5px;
-display:inline-block;
 }
 
-.card a:hover{
+.btn:hover{
 background:#2980b9;
 }
 
@@ -138,32 +121,24 @@ background:#2980b9;
 <div class="container">
 
 <div class="sidebar">
-<a href="#">Dashboard</a>
+<a href="student-dashboard.jsp">Dashboard</a>
 <a href="view-exams">Available Exams</a>
-<a href="submit-exam">My Results</a>
+<a href="result.jsp">My Results</a>
 </div>
 
 <div class="main">
 
-<div class="welcome">
-Welcome, <strong><%= user.getName() %></strong>
-</div>
+<%
+int score = (Integer) request.getAttribute("score");
+%>
 
-<div class="cards">
+<div class="result-card">
 
-<div class="card">
-<h3>Available Exams</h3>
-<p>Start your scheduled exams.</p>
-<br>
-<a href="view-exams">View Exams</a>
-</div>
+<h2>Exam Result</h2>
 
-<div class="card">
-<h3>Results</h3>
-<p>Check your exam results.</p>
-<br>
-<a href="results.jsp">View Results</a>
-</div>
+<div class="score"><%= score %></div>
+
+<a class="btn" href="student-dashboard.jsp">Back to Dashboard</a>
 
 </div>
 
