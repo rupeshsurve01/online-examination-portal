@@ -130,18 +130,11 @@ background:#2980b9;
 
 <body>
 
-<div class="header">
-<h2>Online Examination Portal</h2>
-<a href="login.jsp">Logout</a>
-</div>
+<jsp:include page="components/header.jsp"/>
 
 <div class="container">
 
-<div class="sidebar">
-<a href="#">Dashboard</a>
-<a href="view-exams">Available Exams</a>
-<a href="submit-exam">My Results</a>
-</div>
+<jsp:include page="components/sidebar.jsp"/>
 
 <div class="main">
 
