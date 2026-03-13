@@ -108,6 +108,9 @@ List<Question> questions = (List<Question>) request.getAttribute("questionList")
 
 <form action="submit-exam" method="post">
 
+<input type="hidden" name="examId" value="<%= request.getParameter("examId") %>">
+
+
 <%
 for(Question q : questions){
 %>
