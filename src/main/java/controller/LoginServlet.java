@@ -27,12 +27,15 @@ public class LoginServlet extends HttpServlet {
 
             if(user.getRole().equals("admin")){
                 response.sendRedirect("admin-dashboard.jsp");
+                System.out.println("Directing to Admin Dashboard");
             } else {
                 response.sendRedirect("student-dashboard.jsp");
+                System.out.println("Directing to Student Dashboard");
             }
 
         } else {
             response.sendRedirect("login.jsp?error=invalid");
+            System.out.println("Error");
         }
     }
 }

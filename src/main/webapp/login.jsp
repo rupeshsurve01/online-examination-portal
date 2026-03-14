@@ -20,6 +20,7 @@
 <input type="email" name="email" placeholder="Email" class="input" required>
 
 
+
 <input type="password" name="password" placeholder="Password" class="input" required>
 
 <button type="submit">Login</button>

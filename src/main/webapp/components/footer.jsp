@@ -7,10 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div class="header">
-<h2>Online Examination Portal</h2>
-<a href="login.jsp">Logout</a>
-</div>
+
 
 </body>
 </html>

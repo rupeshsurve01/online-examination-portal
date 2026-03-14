@@ -1,8 +1,9 @@
 package controller;
 
 import dao.QuestionDAO;
+import dao.ResultDAO;
 import model.Question;
-
+import model.User;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import jakarta.servlet.*;
@@ -36,8 +37,18 @@ public class SubmitExamServlet extends HttpServlet {
             }
         }
 
-        request.setAttribute("score", score);
+        // get logged-in user
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
+        int studentId = user.getId();
+
+        // save result
+        ResultDAO resultDAO = new ResultDAO();
+        resultDAO.saveResult(studentId, examId, score);
+
+        // send score to result page
+        request.setAttribute("score", score);
         request.getRequestDispatcher("result.jsp").forward(request,response);
     }
 }

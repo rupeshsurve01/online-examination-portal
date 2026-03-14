@@ -14,7 +14,7 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.getWriter().println("Register Servlet is working!");
+        response.getWriter().println("Register Servlet is working!"); // Prints text on http://localhost:8081/online-examination-portal/RegisterServlet 
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
