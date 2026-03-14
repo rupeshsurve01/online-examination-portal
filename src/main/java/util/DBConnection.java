@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 	
-	private static String URL = "jdbc:mysql://localhost:3306/exam_portal";
+	private static String URL = "jdbc:mysql://localhost:3306/examnova";
 	private static String USER = "root";
-	private static String PASS = "";
+	private static String PASS = "rupeshmysql.com";
 	
 	public static Connection getConnection() {
 		Connection conn = null;
