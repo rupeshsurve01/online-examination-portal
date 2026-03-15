@@ -159,8 +159,7 @@ Welcome, <strong><%= user.getName() %></strong>
 <h3>Results</h3>
 <p>Check your exam results.</p>
 <br>
-<a href="results.jsp">View Results</a>
-</div>
+<a href="view-results">View Results</a></div>
 
 </div>
 
