@@ -40,5 +40,25 @@ public class ExamDAO {
 		return list;
 		
 	}
+	
+	public void createExam(String title, int duration){
+
+	    try{
+
+	        Connection conn = DBConnection.getConnection();
+
+	        String sql = "INSERT INTO exams(title,duration) VALUES(?,?)";
+
+	        PreparedStatement ps = conn.prepareStatement(sql);
+
+	        ps.setString(1, title);
+	        ps.setInt(2, duration);
+
+	        ps.executeUpdate();
+
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+	}
 
 }
