@@ -12,26 +12,32 @@ import util.DBConnection;
 public class QuestionDAO {
 	
 	public void createQuestion(Question q) {
-		
-		try {
-			Connection conn = DBConnection.getConnection();
-			
-			String sql = "INSERT INTO questios(question_text,option1,option2,option3,option4,correct_option) values (?,?,?,?,?,?)";
-			
-			PreparedStatement ps = conn.prepareStatement(sql);
-			
-			int row = ps.executeUpdate();
-			
-			if(row > 0) {
-				System.out.println("Question Added Successfully");
-			}
-			else {
-				System.out.println("Question Not Added Successfully");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+
+	    try {
+	        Connection conn = DBConnection.getConnection();
+
+	        String sql = "INSERT INTO questions(question_text,option1,option2,option3,option4,correct_option) VALUES (?,?,?,?,?,?)";
+
+	        PreparedStatement ps = conn.prepareStatement(sql);
+
+	        ps.setString(1, q.getQuestionText());
+	        ps.setString(2, q.getOption1());
+	        ps.setString(3, q.getOption2());
+	        ps.setString(4, q.getOption3());
+	        ps.setString(5, q.getOption4());
+	        ps.setInt(6, q.getCorrectOption());
+
+	        int row = ps.executeUpdate();
+
+	        if(row > 0) {
+	            System.out.println("Question Added Successfully");
+	        } else {
+	            System.out.println("Question Not Added");
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
     public List<Question> getQuestionsByExam(int examId) {

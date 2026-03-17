@@ -22,7 +22,8 @@
 	
 	<br><br>
 	
-	<button type="submit">Create Exam</button>
+	<button type="submit"></button>
+	<a href="add-question.jsp">Create Exam</a>
 	
 	</form>
 

@@ -19,6 +19,7 @@ public class CreateQuestionServlet extends HttpServlet {
 		
 		Question q = new Question();
 		
+		q.setExamId(Integer.parseInt(request.getParameter("exam_id")));
 		q.setQuestionText(request.getParameter("question"));
 		q.setOption1(request.getParameter("option1"));
 		q.setOption2(request.getParameter("option2"));
@@ -29,6 +30,6 @@ public class CreateQuestionServlet extends HttpServlet {
 		QuestionDAO dao = new QuestionDAO();
 		dao.createQuestion(q);
 		
-		response.sendRedirect("/create-question");
+		response.sendRedirect("/add-question.jsp");
 	}
 }

@@ -41,7 +41,9 @@ public class ExamDAO {
 		
 	}
 	
-	public void createExam(String title, int duration){
+	public int createExam(String title, int duration){
+
+	    int examId = 0;
 
 	    try{
 
@@ -49,16 +51,24 @@ public class ExamDAO {
 
 	        String sql = "INSERT INTO exams(title,duration) VALUES(?,?)";
 
-	        PreparedStatement ps = conn.prepareStatement(sql);
+	        PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
 	        ps.setString(1, title);
 	        ps.setInt(2, duration);
 
 	        ps.executeUpdate();
 
+	        ResultSet rs = ps.getGeneratedKeys();
+
+	        if(rs.next()){
+	            examId = rs.getInt(1);
+	        }
+
 	    }catch(Exception e){
 	        e.printStackTrace();
 	    }
+
+	    return examId;
 	}
 
 }
