@@ -10,6 +10,29 @@ import model.Question;
 import util.DBConnection;
 
 public class QuestionDAO {
+	
+	public void createQuestion(Question q) {
+		
+		try {
+			Connection conn = DBConnection.getConnection();
+			
+			String sql = "INSERT INTO questios(question_text,option1,option2,option3,option4,correct_option) values (?,?,?,?,?,?)";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			int row = ps.executeUpdate();
+			
+			if(row > 0) {
+				System.out.println("Question Added Successfully");
+			}
+			else {
+				System.out.println("Question Not Added Successfully");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 
     public List<Question> getQuestionsByExam(int examId) {
 
