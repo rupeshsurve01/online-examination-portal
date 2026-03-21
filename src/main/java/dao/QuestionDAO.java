@@ -52,8 +52,7 @@ public class QuestionDAO {
 
             Connection conn = DBConnection.getConnection();
 
-            String sql = "SELECT * FROM questions WHERE exam_id=?";
-
+            String sql = "SELECT * FROM questions WHERE exam_id=? ORDER BY RAND()";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setInt(1, examId);
