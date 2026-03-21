@@ -94,10 +94,29 @@ background:#1e8449;
 </head>
 
 <body>
+let minutes = ${exam.duration};
+let seconds = minutes * 60;
+
+let timer = setInterval(function(){
+
+    let m = Math.floor(seconds / 60);
+    let s = seconds % 60;
+
+    document.getElementById("timer").innerText = m + ":" + s;
+
+    seconds--;
+
+    if(seconds < 0){
+        clearInterval(timer);
+        alert("Time Up! Exam Submitted");
+        document.getElementById("examForm").submit();
+    }
+
+},1000);
 
 <div class="header">
 <h2>Online Examination</h2>
-<div class="timer">Time Left: 30:00</div>
+<div class="timer"><h3>Time Remaining: <span id="timer"></span></h3></div>
 </div>
 
 <div class="exam-container">

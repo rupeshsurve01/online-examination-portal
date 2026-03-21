@@ -70,5 +70,34 @@ public class ExamDAO {
 
 	    return examId;
 	}
+	
+	
+	public Exam getExamById(int id){
+
+	    Exam exam = null;
+
+	    try{
+	        Connection conn = DBConnection.getConnection();
+
+	        String sql = "SELECT * FROM exams WHERE id=?";
+
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ps.setInt(1,id);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        if(rs.next()){
+	            exam = new Exam();
+	            exam.setId(rs.getInt("id"));
+	            exam.setTitle(rs.getString("title"));
+	            exam.setDuration(rs.getInt("duration"));
+	        }
+
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+
+	    return exam;
+	}
 
 }

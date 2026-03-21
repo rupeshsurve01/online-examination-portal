@@ -67,4 +67,33 @@ public class ResultDAO {
 
         return list;
     }
+    
+    
+    public boolean hasAttempted(int studentId,int examId){
+
+        boolean attempted = false;
+
+        try{
+            Connection conn = DBConnection.getConnection();
+
+            String sql = "SELECT * FROM results WHERE student_id=? AND exam_id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1,studentId);
+            ps.setInt(2,examId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                attempted = true;
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return attempted;
+    }
+    
 }
