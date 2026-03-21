@@ -16,16 +16,18 @@ public class QuestionDAO {
 	    try {
 	        Connection conn = DBConnection.getConnection();
 
-	        String sql = "INSERT INTO questions(question_text,option1,option2,option3,option4,correct_option) VALUES (?,?,?,?,?,?)";
+	        String sql = "INSERT INTO questions(exam_id,question_text,option1,option2,option3,option4,correct_option)\r\n"
+	        		+ "VALUES (?,?,?,?,?,?,?)";
 
 	        PreparedStatement ps = conn.prepareStatement(sql);
 
-	        ps.setString(1, q.getQuestionText());
-	        ps.setString(2, q.getOption1());
-	        ps.setString(3, q.getOption2());
-	        ps.setString(4, q.getOption3());
-	        ps.setString(5, q.getOption4());
-	        ps.setInt(6, q.getCorrectOption());
+	        ps.setInt(1, q.getExamId());
+	        ps.setString(2, q.getQuestionText());
+	        ps.setString(3, q.getOption1());
+	        ps.setString(4, q.getOption2());
+	        ps.setString(5, q.getOption3());
+	        ps.setString(6, q.getOption4());
+	        ps.setInt(7, q.getCorrectOption());
 
 	        int row = ps.executeUpdate();
 
@@ -39,6 +41,8 @@ public class QuestionDAO {
 	        e.printStackTrace();
 	    }
 	}
+	
+	
 
     public List<Question> getQuestionsByExam(int examId) {
 
