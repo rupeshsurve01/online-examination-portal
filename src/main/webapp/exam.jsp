@@ -94,7 +94,9 @@ background:#1e8449;
 </head>
 
 <body>
-let minutes = ${exam.duration};
+<script>
+
+let minutes = <%= ((model.Exam)request.getAttribute("exam")).getDuration() %>;
 let seconds = minutes * 60;
 
 let timer = setInterval(function(){
@@ -102,7 +104,7 @@ let timer = setInterval(function(){
     let m = Math.floor(seconds / 60);
     let s = seconds % 60;
 
-    document.getElementById("timer").innerText = m + ":" + s;
+    document.getElementById("timer").innerText = m + ":" + (s < 10 ? "0"+s : s);
 
     seconds--;
 
@@ -114,6 +116,8 @@ let timer = setInterval(function(){
 
 },1000);
 
+</script>
+
 <div class="header">
 <h2>Online Examination</h2>
 <div class="timer"><h3>Time Remaining: <span id="timer"></span></h3></div>
@@ -122,14 +126,13 @@ let timer = setInterval(function(){
 <div class="exam-container">
 
 <%
-List<Question> questions = (List<Question>) request.getAttribute("questionList");
+List<Question> questions = (List<Question>) request.getAttribute("questions");
 %>
 
-<form action="submit-exam" method="post">
-
+<form id="examForm" action="submit-exam" method="post">
 <input type="hidden" name="examId" value="<%= request.getParameter("examId") %>">
 
-
+<input type="hidden" name="rtime" value="<%= request.getParameter("rtime") %>">
 <%
 for(Question q : questions){
 %>

@@ -15,20 +15,28 @@ import model.Question;
 
 @WebServlet("/start-exam")
 public class StartExamServlet extends HttpServlet {
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		
-		int examId = Integer.parseInt(request.getParameter("examId"));
 
-		QuestionDAO dao = new QuestionDAO();
-		List<Question> questions = dao.getQuestionsByExam(examId);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		ExamDAO examDAO = new ExamDAO();
-		Exam exam = examDAO.getExamById(examId);
+        int examId = Integer.parseInt(request.getParameter("examId"));
 
-		request.setAttribute("exam", exam);
-		request.setAttribute("questionList", questions);
+        QuestionDAO questionDAO = new QuestionDAO();
+        ExamDAO examDAO = new ExamDAO();
 
-		request.getRequestDispatcher("exam.jsp").forward(request,response);
-	}
+        List<Question> questions = null;
+        Exam exam = null;
+
+        try {
+            questions = questionDAO.getQuestionsByExam(examId);
+            exam = examDAO.getExamById(examId);   // get exam info
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        request.setAttribute("questions", questions);
+        request.setAttribute("exam", exam);  // send exam to JSP
+
+        request.getRequestDispatcher("exam.jsp").forward(request, response);
+    }
 }

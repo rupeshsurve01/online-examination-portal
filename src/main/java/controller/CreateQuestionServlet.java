@@ -15,10 +15,10 @@ import model.Question;
 public class CreateQuestionServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-			throws IOException,ServletException{
-		
+			throws IOException, ServletException {
+
 		Question q = new Question();
-		
+
 		q.setExamId(Integer.parseInt(request.getParameter("exam_id")));
 		q.setQuestionText(request.getParameter("question"));
 		q.setOption1(request.getParameter("option1"));
@@ -26,13 +26,13 @@ public class CreateQuestionServlet extends HttpServlet {
 		q.setOption3(request.getParameter("option3"));
 		q.setOption4(request.getParameter("option4"));
 		q.setCorrectOption(Integer.parseInt(request.getParameter("correct_option")));
-		
+
 		QuestionDAO dao = new QuestionDAO();
 		dao.createQuestion(q);
-		
+
 		int examId = Integer.parseInt(request.getParameter("exam_id"));
 
-		
-		response.sendRedirect("/add-question.jsp?examId=1");
+		// redirect back to add-question page
+		response.sendRedirect("add-question.jsp?examId=" + examId);
 	}
 }
