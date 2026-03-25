@@ -49,6 +49,6 @@ public class SubmitExamServlet extends HttpServlet {
 
         // send score to result page
         request.setAttribute("score", score);
-        request.getRequestDispatcher("result.jsp").forward(request,response);
+        request.getRequestDispatcher("results.jsp").forward(request,response);
     }
 }

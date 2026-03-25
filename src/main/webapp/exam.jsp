@@ -16,37 +16,43 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body{
-background:#f4f6f9;
-padding:30px;
+background:#f4f6fb;
+padding:25px;
 }
 
 /* HEADER */
 
 .header{
-background:#2c3e50;
+background:linear-gradient(135deg,#667eea,#764ba2);
 color:white;
-padding:15px 25px;
-margin-bottom:20px;
-border-radius:6px;
+padding:18px 30px;
+margin-bottom:25px;
+border-radius:10px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+box-shadow:0 6px 15px rgba(0,0,0,0.1);
+}
+
+.header h2{
+font-weight:600;
 }
 
 .timer{
-background:#e74c3c;
-padding:8px 15px;
-border-radius:5px;
+background:#ff4b5c;
+padding:8px 18px;
+border-radius:20px;
+font-weight:bold;
 }
 
 /* EXAM CONTAINER */
 
 .exam-container{
-max-width:800px;
+max-width:900px;
 margin:auto;
 }
 
@@ -54,39 +60,57 @@ margin:auto;
 
 .question-card{
 background:white;
-padding:20px;
+padding:25px;
 margin-bottom:20px;
-border-radius:8px;
-box-shadow:0 3px 8px rgba(0,0,0,0.1);
+border-radius:12px;
+box-shadow:0 8px 18px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.question-card:hover{
+transform:translateY(-3px);
 }
 
 .question-card p{
-margin-bottom:10px;
-font-size:16px;
+margin-bottom:15px;
+font-size:17px;
+color:#333;
 }
 
 /* OPTIONS */
 
 .option{
-margin:6px 0;
+padding:10px;
+border-radius:6px;
+transition:0.2s;
+}
+
+.option:hover{
+background:#f1f3ff;
+}
+
+.option input{
+margin-right:10px;
 }
 
 /* SUBMIT BUTTON */
 
 .submit-btn{
 display:block;
-margin:30px auto;
-background:#27ae60;
+margin:35px auto;
+background:linear-gradient(135deg,#27ae60,#2ecc71);
 color:white;
 border:none;
-padding:12px 30px;
+padding:14px 35px;
 font-size:16px;
-border-radius:6px;
+border-radius:8px;
 cursor:pointer;
+transition:0.3s;
 }
 
 .submit-btn:hover{
-background:#1e8449;
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,0.2);
 }
 
 </style>
@@ -94,6 +118,7 @@ background:#1e8449;
 </head>
 
 <body>
+
 <script>
 
 let minutes = <%= ((model.Exam)request.getAttribute("exam")).getDuration() %>;
@@ -120,7 +145,7 @@ let timer = setInterval(function(){
 
 <div class="header">
 <h2>Online Examination</h2>
-<div class="timer"><h3>Time Remaining: <span id="timer"></span></h3></div>
+<div class="timer">⏱ Time Remaining: <span id="timer"></span></div>
 </div>
 
 <div class="exam-container">
@@ -130,9 +155,10 @@ List<Question> questions = (List<Question>) request.getAttribute("questions");
 %>
 
 <form id="examForm" action="submit-exam" method="post">
-<input type="hidden" name="examId" value="<%= request.getParameter("examId") %>">
 
+<input type="hidden" name="examId" value="<%= request.getParameter("examId") %>">
 <input type="hidden" name="rtime" value="<%= request.getParameter("rtime") %>">
+
 <%
 for(Question q : questions){
 %>
@@ -141,21 +167,21 @@ for(Question q : questions){
 
 <p><b><%= q.getQuestionText() %></b></p>
 
-<div class="option">
+<label class="option">
 <input type="radio" name="q<%= q.getId() %>" value="1"> <%= q.getOption1() %>
-</div>
+</label>
 
-<div class="option">
+<label class="option">
 <input type="radio" name="q<%= q.getId() %>" value="2"> <%= q.getOption2() %>
-</div>
+</label>
 
-<div class="option">
+<label class="option">
 <input type="radio" name="q<%= q.getId() %>" value="3"> <%= q.getOption3() %>
-</div>
+</label>
 
-<div class="option">
+<label class="option">
 <input type="radio" name="q<%= q.getId() %>" value="4"> <%= q.getOption4() %>
-</div>
+</label>
 
 </div>
 

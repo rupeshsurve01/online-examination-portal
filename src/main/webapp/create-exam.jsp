@@ -8,61 +8,110 @@
 
 <style>
 
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(120deg,#4facfe,#00f2fe);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin:0;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* BACKGROUND */
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+}
+
+/* CARD */
 
 .container{
-    background:white;
-    padding:35px;
-    width:350px;
-    border-radius:10px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+width:380px;
+background:rgba(255,255,255,0.95);
+padding:35px;
+border-radius:14px;
+box-shadow:0 15px 35px rgba(0,0,0,0.2);
+backdrop-filter:blur(10px);
+animation:fadeIn 0.6s ease;
 }
+
+/* TITLE */
 
 h2{
-    text-align:center;
-    margin-bottom:25px;
+text-align:center;
+margin-bottom:25px;
+color:#2c3e50;
+font-weight:600;
+letter-spacing:0.5px;
 }
+
+/* LABEL */
 
 label{
-    font-weight:bold;
-    display:block;
-    margin-bottom:5px;
+display:block;
+font-weight:600;
+margin-bottom:6px;
+margin-top:14px;
+color:#444;
 }
+
+/* INPUT */
 
 input{
-    width:100%;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:5px;
-    margin-bottom:15px;
+width:100%;
+padding:11px;
+border:1px solid #dcdcdc;
+border-radius:6px;
+font-size:14px;
+transition:0.25s;
 }
 
+input:focus{
+border-color:#4facfe;
+box-shadow:0 0 5px rgba(79,172,254,0.4);
+outline:none;
+}
+
+/* BUTTON */
+
 button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:6px;
-    background:#4facfe;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+width:100%;
+margin-top:22px;
+padding:13px;
+border:none;
+border-radius:7px;
+background:linear-gradient(135deg,#4facfe,#00c6ff);
+color:white;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
 }
 
 button:hover{
-    background:#3399ff;
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* ANIMATION */
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
 </style>
 
 </head>
+
 <body>
 
 <div class="container">
@@ -71,11 +120,11 @@ button:hover{
 
 <form action="create-exam" method="post">
 
-<label>Title</label>
-<input type="text" name="title" required>
+<label>Exam Title</label>
+<input type="text" name="title" placeholder="Enter exam title" required>
 
 <label>Duration (minutes)</label>
-<input type="number" name="duration" required>
+<input type="number" name="duration" placeholder="Enter exam duration" required>
 
 <button type="submit">Create Exam</button>
 

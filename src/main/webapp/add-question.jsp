@@ -4,81 +4,123 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Create Question</title>
+<title>Add Question</title>
 
 <style>
 
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(120deg,#667eea,#764ba2);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin:0;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* PAGE BACKGROUND */
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+/* CARD */
 
 .container{
-    background:white;
-    padding:35px;
-    width:420px;
-    border-radius:10px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+width:440px;
+background:rgba(255,255,255,0.95);
+padding:35px;
+border-radius:14px;
+box-shadow:0 15px 40px rgba(0,0,0,0.2);
+backdrop-filter:blur(10px);
+animation:fadeIn 0.6s ease;
 }
+
+/* TITLE */
 
 h2{
-    text-align:center;
-    margin-bottom:25px;
-    color:#333;
+text-align:center;
+margin-bottom:25px;
+color:#2c3e50;
+font-weight:600;
+letter-spacing:0.5px;
 }
 
+/* LABELS */
+
 label{
-    font-weight:bold;
-    display:block;
-    margin-top:12px;
-    margin-bottom:5px;
+display:block;
+font-weight:600;
+margin-top:14px;
+margin-bottom:6px;
+color:#444;
 }
+
+/* INPUTS */
 
 input[type="text"],
 input[type="number"],
 textarea{
-    width:100%;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:5px;
-    outline:none;
-    font-size:14px;
+width:100%;
+padding:11px;
+border:1px solid #dcdcdc;
+border-radius:6px;
+font-size:14px;
+transition:all 0.25s ease;
 }
 
 textarea{
-    resize:none;
+resize:none;
 }
+
+/* INPUT FOCUS */
 
 input:focus,
 textarea:focus{
-    border-color:#667eea;
+border-color:#667eea;
+box-shadow:0 0 5px rgba(102,126,234,0.4);
+outline:none;
 }
 
+/* BUTTON */
+
 button{
-    width:100%;
-    margin-top:20px;
-    padding:12px;
-    border:none;
-    border-radius:6px;
-    background:#667eea;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
+width:100%;
+margin-top:22px;
+padding:13px;
+border:none;
+border-radius:7px;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+transition:all 0.3s ease;
 }
 
 button:hover{
-    background:#5563d1;
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* ANIMATION */
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
 </style>
 
 </head>
+
 <body>
 
 <%
@@ -99,7 +141,7 @@ if(examParam != null){
 <input type="hidden" name="exam_id" value="<%= examId %>">
 
 <label>Question</label>
-<textarea rows="4" name="question" placeholder="Enter question"></textarea>
+<textarea rows="4" name="question" placeholder="Enter your question"></textarea>
 
 <label>Option 1</label>
 <input type="text" name="option1" placeholder="Option 1">
@@ -116,7 +158,7 @@ if(examParam != null){
 <label>Correct Option (1-4)</label>
 <input type="number" name="correct_option" min="1" max="4">
 
-<button type="submit">Submit Question</button>
+<button type="submit">Add Question</button>
 
 </form>
 

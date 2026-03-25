@@ -16,77 +16,38 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* LAYOUT */
+body{
+background:#f4f6fb;
+}
+
+/* MAIN AREA */
 
 .container{
 display:flex;
-height:calc(100vh - 60px);
 }
-
-/* SIDEBAR */
-
-.sidebar{
-width:220px;
-background:#34495e;
-color:white;
-padding-top:20px;
-}
-
-.sidebar a{
-display:block;
-padding:15px 20px;
-color:white;
-text-decoration:none;
-transition:0.3s;
-}
-
-.sidebar a:hover{
-background:#2c3e50;
-}
-
-
-.header{
-background:#2c3e50;
-color:white;
-padding:15px 30px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.header h2{
-font-size:22px;
-}
-
-.header a{
-color:white;
-text-decoration:none;
-background:#e74c3c;
-padding:8px 15px;
-border-radius:5px;
-}
-
-
-/* LAYOUT */
-
-.container{
-display:flex;
-height:calc(100vh - 60px);
-}
-
-/* MAIN CONTENT */
 
 .main{
 flex:1;
 padding:40px;
-background:#f4f6f9;
 }
 
+/* TITLE */
+
 .main h2{
-margin-bottom:20px;
+margin-bottom:25px;
+color:#333;
+}
+
+/* RESULT CARD */
+
+.result-card{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
 /* TABLE */
@@ -94,38 +55,42 @@ margin-bottom:20px;
 table{
 width:100%;
 border-collapse:collapse;
-background:white;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 th{
-background:#3498db;
+background:linear-gradient(135deg,#667eea,#764ba2);
 color:white;
-padding:12px;
+padding:14px;
+font-weight:500;
 }
 
 td{
-padding:12px;
+padding:14px;
 text-align:center;
-border-bottom:1px solid #ddd;
+border-bottom:1px solid #eee;
 }
 
 tr:hover{
-background:#f1f1f1;
+background:#f9fafc;
 }
+
+/* BACK BUTTON */
 
 .back-btn{
 display:inline-block;
-margin-top:20px;
+margin-top:25px;
 text-decoration:none;
-background:#27ae60;
+background:linear-gradient(135deg,#27ae60,#2ecc71);
 color:white;
-padding:10px 20px;
-border-radius:5px;
+padding:10px 22px;
+border-radius:6px;
+font-size:14px;
+transition:0.25s;
 }
 
 .back-btn:hover{
-background:#1e8449;
+transform:translateY(-2px);
+box-shadow:0 5px 12px rgba(0,0,0,0.15);
 }
 
 </style>
@@ -150,6 +115,8 @@ List<Result> results = (List<Result>) request.getAttribute("resultList");
 
 <h2>Your Results</h2>
 
+<div class="result-card">
+
 <table>
 
 <tr>
@@ -173,6 +140,8 @@ for(Result r : results){
 %>
 
 </table>
+
+</div>
 
 <a class="back-btn" href="student-dashboard.jsp">Back to Dashboard</a>
 
