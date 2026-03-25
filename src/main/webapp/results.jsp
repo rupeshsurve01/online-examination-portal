@@ -125,7 +125,15 @@ List<Result> results = (List<Result>) request.getAttribute("resultList");
 </tr>
 
 <%
-if(results != null){
+if(results == null || results.isEmpty()){
+%>
+
+<tr>
+<td colspan="2">No results found</td>
+</tr>
+
+<%
+}else{
 for(Result r : results){
 %>
 
