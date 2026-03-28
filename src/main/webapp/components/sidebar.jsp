@@ -1,4 +1,14 @@
+<%@ page import="model.User" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%
+User user = (User) session.getAttribute("user");
+String dashboardLink = "student-dashboard.jsp";
+
+if (user != null && "admin".equalsIgnoreCase(user.getRole())) {
+    dashboardLink = "admin-dashboard.jsp";
+}
+%>
 
 <!DOCTYPE html>
 <html>
@@ -48,11 +58,11 @@ margin-top:10px;
 
 <div class="sidebar">
 
-<a href="student-dashboard.jsp">🏠 Dashboard</a>
+<a href="<%= dashboardLink %>">Dashboard</a>
 
-<a href="view-exams">📝 Available Exams</a>
+<a href="view-exams">Available Exams</a>
 
-<a href="results.jsp">📊 My Results</a>
+<a href="view-results">My Results</a>
 
 </div>
 

@@ -51,10 +51,8 @@ public class SubmitExamServlet extends HttpServlet {
 
         ResultDAO resultDAO = new ResultDAO();
 
-        // Save result
         resultDAO.saveResult(studentId, examId, score);
 
-        // Fetch all results for this student
         List<Result> results = resultDAO.getResultsByStudent(studentId);
 
         // Send to JSP
