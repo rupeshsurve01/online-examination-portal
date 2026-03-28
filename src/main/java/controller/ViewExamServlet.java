@@ -17,13 +17,17 @@ public class ViewExamServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String category = request.getParameter("category");
         ExamDAO dao = new ExamDAO();
 
-        List<Exam> exams = dao.getAllExams();
+        List<Exam> exams = dao.getAllExams(category);
+        List<String> categories = dao.getAllCategories();
 
         System.out.println("Exam list size: " + exams.size());
 
         request.setAttribute("examList", exams);
+        request.setAttribute("categoryList", categories);
+        request.setAttribute("selectedCategory", category);
 
         request.getRequestDispatcher("view-exams.jsp").forward(request, response);
     }

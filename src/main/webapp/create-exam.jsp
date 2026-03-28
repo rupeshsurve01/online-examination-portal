@@ -59,7 +59,7 @@ color:#444;
 
 /* INPUT */
 
-input{
+input, select{
 width:100%;
 padding:11px;
 border:1px solid #dcdcdc;
@@ -68,7 +68,7 @@ font-size:14px;
 transition:0.25s;
 }
 
-input:focus{
+input:focus, select:focus{
 border-color:#4facfe;
 box-shadow:0 0 5px rgba(79,172,254,0.4);
 outline:none;
@@ -125,6 +125,16 @@ transform:translateY(0);
 
 <label>Duration (minutes)</label>
 <input type="number" name="duration" placeholder="Enter exam duration" required>
+
+<label>Category</label>
+<select name="category" required>
+    <option value="">Select exam category</option>
+    <option value="General">General</option>
+    <option value="Math">Math</option>
+    <option value="Science">Science</option>
+    <option value="English">English</option>
+    <option value="Computer Science">Computer Science</option>
+</select>
 
 <button type="submit">Create Exam</button>
 

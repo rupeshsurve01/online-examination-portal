@@ -68,6 +68,59 @@ public class ResultDAO {
         return list;
     }
     
+    public int getAttemptedExamCount(int studentId) {
+        int count = 0;
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "SELECT COUNT(*) AS total FROM results WHERE student_id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                count = rs.getInt("total");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public double getAverageScore(int studentId) {
+        double average = 0.0;
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "SELECT AVG(score) AS avg_score FROM results WHERE student_id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                average = rs.getDouble("avg_score");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return average;
+    }
+
+    public String getBestCategory(int studentId) {
+        String bestCategory = "N/A";
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "SELECT e.category, AVG(r.score) AS avg_score " +
+                         "FROM results r JOIN exams e ON r.exam_id = e.id " +
+                         "WHERE r.student_id=? GROUP BY e.category " +
+                         "ORDER BY avg_score DESC LIMIT 1";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                bestCategory = rs.getString("category");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return bestCategory;
+    }
     
     public boolean hasAttempted(int studentId,int examId){
 

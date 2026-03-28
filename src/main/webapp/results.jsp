@@ -41,6 +41,33 @@ margin-bottom:25px;
 color:#333;
 }
 
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.stat-card{
+background:white;
+padding:22px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+.stat-card h3{
+margin-bottom:10px;
+font-size:18px;
+color:#333;
+}
+
+.stat-card p{
+font-size:24px;
+font-weight:700;
+color:#2c3e50;
+}
+
 /* RESULT CARD */
 
 .result-card{
@@ -114,6 +141,30 @@ List<Result> results = (List<Result>) request.getAttribute("resultList");
 %>
 
 <h2>Your Results</h2>
+
+<%
+int examCount = request.getAttribute("examCount") != null ? (Integer) request.getAttribute("examCount") : 0;
+double averageScore = request.getAttribute("averageScore") != null ? (Double) request.getAttribute("averageScore") : 0.0;
+String bestCategory = (String) request.getAttribute("bestCategory");
+if(bestCategory == null || bestCategory.isEmpty()) {
+    bestCategory = "N/A";
+}
+%>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Total Exams Taken</h3>
+        <p><%= examCount %></p>
+    </div>
+    <div class="stat-card">
+        <h3>Average Score</h3>
+        <p><%= String.format("%.2f", averageScore) %></p>
+    </div>
+    <div class="stat-card">
+        <h3>Best Category</h3>
+        <p><%= bestCategory %></p>
+    </div>
+</div>
 
 <div class="result-card">
 

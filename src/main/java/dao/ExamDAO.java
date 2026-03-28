@@ -12,14 +12,23 @@ import util.DBConnection;
 public class ExamDAO {
 	
 	public List<Exam> getAllExams(){
-		
+		return getAllExams(null);
+	}
+
+	public List<Exam> getAllExams(String category){
 		List<Exam> list = new ArrayList<>();
 		
 		try {
 			Connection conn = DBConnection.getConnection();
 			
-			String sql = "Select * from exams";
+			String sql = "SELECT * FROM exams";
+			if(category != null && !category.trim().isEmpty()){
+				sql += " WHERE category = ?";
+			}
 			PreparedStatement ps = conn.prepareStatement(sql);
+			if(category != null && !category.trim().isEmpty()){
+				ps.setString(1, category.trim());
+			}
 			
 			ResultSet rs = ps.executeQuery();
 			
@@ -28,33 +37,53 @@ public class ExamDAO {
 				
 				exam.setId(rs.getInt("id"));
 				exam.setTitle(rs.getString("title"));
-		        exam.setDuration(rs.getInt("duration"));
+				exam.setDuration(rs.getInt("duration"));
+				exam.setCategory(rs.getString("category"));
 		        
 		        list.add(exam);
-				
 			}
 					
 		} catch (Exception e) {
             e.printStackTrace();
 		}
 		return list;
-		
 	}
-	
-	public int createExam(String title, int duration){
+
+	public List<String> getAllCategories(){
+		List<String> categories = new ArrayList<>();
+		
+		try {
+			Connection conn = DBConnection.getConnection();
+			String sql = "SELECT DISTINCT category FROM exams ORDER BY category";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				categories.add(rs.getString("category"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return categories;
+	}
+
+	public int createExam(String title, int duration, String category){
 
 	    int examId = 0;
+	    if(category == null || category.trim().isEmpty()) {
+	        category = "General";
+	    }
 
 	    try{
 
 	        Connection conn = DBConnection.getConnection();
 
-	        String sql = "INSERT INTO exams(title,duration) VALUES(?,?)";
+	        String sql = "INSERT INTO exams(title,duration,category) VALUES(?,?,?)";
 
 	        PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
 	        ps.setString(1, title);
 	        ps.setInt(2, duration);
+	        ps.setString(3, category.trim());
 
 	        ps.executeUpdate();
 
@@ -70,7 +99,6 @@ public class ExamDAO {
 
 	    return examId;
 	}
-	
 	
 	public Exam getExamById(int id){
 
@@ -91,6 +119,7 @@ public class ExamDAO {
 	            exam.setId(rs.getInt("id"));
 	            exam.setTitle(rs.getString("title"));
 	            exam.setDuration(rs.getInt("duration"));
+	            exam.setCategory(rs.getString("category"));
 	        }
 
 	    }catch(Exception e){

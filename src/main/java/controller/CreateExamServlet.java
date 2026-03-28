@@ -17,9 +17,10 @@ public class CreateExamServlet extends HttpServlet {
 
         String title = request.getParameter("title");
         int duration = Integer.parseInt(request.getParameter("duration"));
+        String category = request.getParameter("category");
 
         ExamDAO dao = new ExamDAO();
-        int examId = dao.createExam(title, duration);
+        int examId = dao.createExam(title, duration, category);
 
         response.sendRedirect("add-question.jsp?examId=" + examId);
     }

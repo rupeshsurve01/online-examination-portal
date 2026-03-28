@@ -5,6 +5,7 @@ public class Exam {
 	private int id;
 	private String title;
 	private int duration;
+	private String category;
 	
 	public int getId() {
 		return id;
@@ -24,6 +25,10 @@ public class Exam {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
-	
-	
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
 }

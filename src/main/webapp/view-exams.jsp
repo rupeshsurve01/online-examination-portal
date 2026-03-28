@@ -161,9 +161,28 @@ box-shadow:0 4px 10px rgba(0,0,0,0.15);
 
 <%
 List<Exam> exams = (List<Exam>) request.getAttribute("examList");
+List<String> categories = (List<String>) request.getAttribute("categoryList");
+String selectedCategory = (String) request.getAttribute("selectedCategory");
 %>
 
 <h2>Available Exams</h2>
+
+<form class="filter-form" method="get" action="view-exams">
+    <label>Filter by category:</label>
+    <select name="category" onchange="this.form.submit()">
+        <option value="">All categories</option>
+        <%
+            if (categories != null) {
+                for (String category : categories) {
+                    String selected = category.equals(selectedCategory) ? "selected" : "";
+        %>
+        <option value="<%= category %>" <%= selected %>><%= category %></option>
+        <%
+                }
+            }
+        %>
+    </select>
+</form>
 
 <div class="table-card">
 
@@ -172,6 +191,7 @@ List<Exam> exams = (List<Exam>) request.getAttribute("examList");
 <tr>
 <th>Exam ID</th>
 <th>Title</th>
+<th>Category</th>
 <th>Duration</th>
 <th>Action</th>
 </tr>
@@ -184,6 +204,7 @@ for(Exam exam : exams){
 <tr>
 <td><%= exam.getId() %></td>
 <td><%= exam.getTitle() %></td>
+<td><%= exam.getCategory() %></td>
 <td><%= exam.getDuration() %> minutes</td>
 <td>
 <a class="start-btn" href="start-exam?examId=<%= exam.getId() %>">

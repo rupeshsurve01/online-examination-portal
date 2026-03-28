@@ -27,8 +27,14 @@ public class ViewResultServlet extends HttpServlet {
         ResultDAO dao = new ResultDAO();
 
         List<Result> results = dao.getResultsByStudent(studentId);
+        int examCount = dao.getAttemptedExamCount(studentId);
+        double averageScore = dao.getAverageScore(studentId);
+        String bestCategory = dao.getBestCategory(studentId);
 
         request.setAttribute("resultList", results);
+        request.setAttribute("examCount", examCount);
+        request.setAttribute("averageScore", averageScore);
+        request.setAttribute("bestCategory", bestCategory);
 
         request.getRequestDispatcher("results.jsp").forward(request,response);
     }
