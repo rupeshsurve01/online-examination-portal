@@ -131,5 +131,7 @@ text-decoration:underline;
 
 </div>
 
+<jsp:include page="components/footer.jsp"/>
 </body>
 </html>
+

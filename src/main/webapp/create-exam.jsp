@@ -132,5 +132,7 @@ transform:translateY(0);
 
 </div>
 
+<jsp:include page="components/footer.jsp"/>
 </body>
 </html>
+

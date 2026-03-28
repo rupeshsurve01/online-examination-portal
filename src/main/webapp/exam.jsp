@@ -195,5 +195,7 @@ for(Question q : questions){
 
 </div>
 
+<jsp:include page="components/footer.jsp"/>
 </body>
 </html>
+

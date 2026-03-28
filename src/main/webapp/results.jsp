@@ -157,5 +157,7 @@ for(Result r : results){
 
 </div>
 
+<jsp:include page="components/footer.jsp"/>
 </body>
 </html>
+
