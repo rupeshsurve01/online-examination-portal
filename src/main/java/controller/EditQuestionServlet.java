@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import dao.ExamDAO;
 import dao.QuestionDAO;
@@ -15,8 +14,8 @@ import model.Exam;
 import model.Question;
 import model.User;
 
-@WebServlet("/view-questions")
-public class ViewQuestionsServlet extends HttpServlet {
+@WebServlet("/edit-question")
+public class EditQuestionServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -30,30 +29,31 @@ public class ViewQuestionsServlet extends HttpServlet {
         }
 
         String examIdParam = request.getParameter("examId");
+        String questionIdParam = request.getParameter("questionId");
         int examId;
+        int questionId;
 
         try {
             examId = Integer.parseInt(examIdParam);
+            questionId = Integer.parseInt(questionIdParam);
         } catch (NumberFormatException e) {
-            response.sendRedirect("view-exams?error=invalidExam");
+            response.sendRedirect("view-exams?error=invalidQuestion");
             return;
         }
 
-        ExamDAO examDAO = new ExamDAO();
         QuestionDAO questionDAO = new QuestionDAO();
-
+        ExamDAO examDAO = new ExamDAO();
+        Question question = questionDAO.getQuestionById(questionId);
         Exam exam = examDAO.getExamById(examId);
 
-        if (exam == null) {
-            response.sendRedirect("view-exams?error=invalidExam");
+        if (question == null || exam == null || question.getExamId() != examId) {
+            response.sendRedirect("edit-exam?examId=" + examId + "&error=invalidQuestion");
             return;
         }
 
-        List<Question> questions = questionDAO.getQuestionsByExamOrdered(examId);
-
-        request.setAttribute("questionList", questions);
+        request.setAttribute("question", question);
         request.setAttribute("exam", exam);
 
-        request.getRequestDispatcher("view-questions.jsp").forward(request, response);
+        request.getRequestDispatcher("edit-question.jsp").forward(request, response);
     }
 }

@@ -36,5 +36,5 @@ transform:scale(1.05);
 
 <div class="header">
     <h2>Online Examination Portal</h2>
-    <a href="LogoutServlet">Logout</a>
+    <a href="<%= request.getContextPath() %>/logout">Logout</a>
 </div>

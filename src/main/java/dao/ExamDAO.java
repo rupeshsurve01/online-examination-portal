@@ -129,4 +129,54 @@ public class ExamDAO {
 	    return exam;
 	}
 
+    public boolean updateExam(Exam exam) {
+
+        boolean updated = false;
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "UPDATE exams SET title=?, duration=?, category=? WHERE id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, exam.getTitle());
+            ps.setInt(2, exam.getDuration());
+            ps.setString(3, exam.getCategory());
+            ps.setInt(4, exam.getId());
+
+            updated = ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return updated;
+    }
+
+    public boolean deleteExam(int examId) {
+
+        boolean deleted = false;
+
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            PreparedStatement deleteResults = conn.prepareStatement("DELETE FROM results WHERE exam_id=?");
+            deleteResults.setInt(1, examId);
+            deleteResults.executeUpdate();
+
+            PreparedStatement deleteQuestions = conn.prepareStatement("DELETE FROM questions WHERE exam_id=?");
+            deleteQuestions.setInt(1, examId);
+            deleteQuestions.executeUpdate();
+
+            PreparedStatement deleteExam = conn.prepareStatement("DELETE FROM exams WHERE id=?");
+            deleteExam.setInt(1, examId);
+
+            deleted = deleteExam.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return deleted;
+    }
+
 }

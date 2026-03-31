@@ -1,24 +1,20 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import dao.ExamDAO;
-import dao.QuestionDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Exam;
-import model.Question;
 import model.User;
 
-@WebServlet("/view-questions")
-public class ViewQuestionsServlet extends HttpServlet {
+@WebServlet("/delete-exam")
+public class DeleteExamServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
@@ -40,20 +36,8 @@ public class ViewQuestionsServlet extends HttpServlet {
         }
 
         ExamDAO examDAO = new ExamDAO();
-        QuestionDAO questionDAO = new QuestionDAO();
+        boolean deleted = examDAO.deleteExam(examId);
 
-        Exam exam = examDAO.getExamById(examId);
-
-        if (exam == null) {
-            response.sendRedirect("view-exams?error=invalidExam");
-            return;
-        }
-
-        List<Question> questions = questionDAO.getQuestionsByExamOrdered(examId);
-
-        request.setAttribute("questionList", questions);
-        request.setAttribute("exam", exam);
-
-        request.getRequestDispatcher("view-questions.jsp").forward(request, response);
+        response.sendRedirect("view-exams" + (deleted ? "?msg=examDeleted" : "?error=deleteFailed"));
     }
 }

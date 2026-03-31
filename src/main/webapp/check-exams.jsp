@@ -136,6 +136,8 @@ font-weight:600;
 text-decoration:none;
 color:white;
 transition:transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+border:none;
+cursor:pointer;
 }
 
 .action-btn:hover{
@@ -153,6 +155,10 @@ background:linear-gradient(135deg,#dc2626,#ef4444);
 
 .view-btn{
 background:linear-gradient(135deg,#059669,#10b981);
+}
+
+.inline-form{
+display:inline;
 }
 
 .empty-state{
@@ -187,6 +193,8 @@ border-radius:16px;
 
 <%
 	List<Exam> exams = (List<Exam>) request.getAttribute("examList");
+    String msg = request.getParameter("msg");
+    String error = request.getParameter("error");
 %> 
 
 	<jsp:include page="components/header.jsp"/>
@@ -202,6 +210,22 @@ border-radius:16px;
 			<p>Review the current exams and quickly access edit, delete, or preview actions.</p>
 		</div>
 	</div>
+
+        <%
+        if ("examDeleted".equals(msg)) {
+        %>
+        <div style="margin-bottom:18px; padding:12px 14px; border-radius:12px; background:#dcfce7; color:#166534; font-weight:600;">
+            Exam deleted successfully.
+        </div>
+        <%
+        } else if ("deleteFailed".equals(error)) {
+        %>
+        <div style="margin-bottom:18px; padding:12px 14px; border-radius:12px; background:#fee2e2; color:#b91c1c; font-weight:600;">
+            Exam deletion failed.
+        </div>
+        <%
+        }
+        %>
 	
 		<div class="table-card">
 		<div class="table-wrapper">
@@ -212,9 +236,9 @@ border-radius:16px;
 				<th>Title</th>
 				<th>Category</th>
 				<th>Duration</th>
-				<th>Add Questions</th>
+				<th>Edit</th>
+				<th>Delete</th>
 				<th>Preview</th>
-				<th>View</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -229,18 +253,19 @@ border-radius:16px;
 					<td><span class="category-badge"><%= exam.getCategory() %></span></td>
 					<td class="duration-text"><%= exam.getDuration() %> minutes</td>
 					<td>
-					<a class="action-btn edit-btn" href="add-question.jsp?examId=<%= exam.getId() %>">
+					<a class="action-btn edit-btn" href="edit-exam?examId=<%= exam.getId() %>">
 					Edit Exam
 					</a>
 					</td>
 					<td>
-					<a class="action-btn delete-btn" href="view-questions?examId=<%= exam.getId() %>">
-					Preview Questions
-					</a>
+                    <form class="inline-form" action="delete-exam" method="post" onsubmit="return confirm('Delete this exam and all its questions/results?');">
+                    <input type="hidden" name="examId" value="<%= exam.getId() %>">
+                    <button class="action-btn delete-btn" type="submit">Delete Exam</button>
+                    </form>
 					</td>
 					<td>
 					<a class="action-btn view-btn" href="view-questions?examId=<%= exam.getId() %>">
-					View Exam
+					Preview Questions
 					</a>
 					</td>
 					

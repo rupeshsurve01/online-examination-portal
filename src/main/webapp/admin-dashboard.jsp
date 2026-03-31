@@ -124,7 +124,7 @@ margin-bottom:10px;
 
 <div class="card">
 <span>🚪</span>
-<a href="LogoutServlet">Logout</a>
+<a href="<%= request.getContextPath() %>/logout">Logout</a>
 </div>
 
 </div>

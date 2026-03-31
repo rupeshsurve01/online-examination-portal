@@ -15,8 +15,8 @@ import model.Exam;
 import model.Question;
 import model.User;
 
-@WebServlet("/view-questions")
-public class ViewQuestionsServlet extends HttpServlet {
+@WebServlet("/edit-exam")
+public class EditExamServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,9 +51,9 @@ public class ViewQuestionsServlet extends HttpServlet {
 
         List<Question> questions = questionDAO.getQuestionsByExamOrdered(examId);
 
-        request.setAttribute("questionList", questions);
         request.setAttribute("exam", exam);
+        request.setAttribute("questionList", questions);
 
-        request.getRequestDispatcher("view-questions.jsp").forward(request, response);
+        request.getRequestDispatcher("edit-exam.jsp").forward(request, response);
     }
 }

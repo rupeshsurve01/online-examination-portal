@@ -7,13 +7,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Question;
+import model.User;
 
 @WebServlet("/create-question")
 public class CreateQuestionServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException {
+
+		HttpSession session = request.getSession(false);
+		User user = session != null ? (User) session.getAttribute("user") : null;
+
+		if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+			response.sendRedirect("login.jsp");
+			return;
+		}
 
 		String examIdParam = request.getParameter("exam_id");
 		String questionText = request.getParameter("question");
@@ -29,7 +39,7 @@ public class CreateQuestionServlet extends HttpServlet {
 			examId = Integer.parseInt(examIdParam);
 			correctOption = Integer.parseInt(correctOptionParam);
 		} catch (NumberFormatException e) {
-			response.sendRedirect("add-question.jsp?examId=" + examIdParam + "&error=invalidInput");
+			response.sendRedirect("edit-exam?examId=" + examIdParam + "&error=invalidInput");
 			return;
 		}
 
@@ -39,7 +49,7 @@ public class CreateQuestionServlet extends HttpServlet {
 				|| option3 == null || option3.trim().isEmpty()
 				|| option4 == null || option4.trim().isEmpty()
 				|| correctOption < 1 || correctOption > 4) {
-			response.sendRedirect("add-question.jsp?examId=" + examId + "&error=invalidInput");
+			response.sendRedirect("edit-exam?examId=" + examId + "&error=invalidInput");
 			return;
 		}
 
@@ -56,6 +66,6 @@ public class CreateQuestionServlet extends HttpServlet {
 		QuestionDAO dao = new QuestionDAO();
 		dao.createQuestion(q);
 
-		response.sendRedirect("add-question.jsp?examId=" + examId);
+		response.sendRedirect("edit-exam?examId=" + examId + "&msg=questionAdded");
 	}
 }

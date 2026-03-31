@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
 
-import dao.ExamDAO;
 import dao.QuestionDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,14 +9,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Exam;
-import model.Question;
 import model.User;
 
-@WebServlet("/view-questions")
-public class ViewQuestionsServlet extends HttpServlet {
+@WebServlet("/delete-question")
+public class DeleteQuestionServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
@@ -30,30 +26,21 @@ public class ViewQuestionsServlet extends HttpServlet {
         }
 
         String examIdParam = request.getParameter("examId");
+        String questionIdParam = request.getParameter("questionId");
         int examId;
+        int questionId;
 
         try {
             examId = Integer.parseInt(examIdParam);
+            questionId = Integer.parseInt(questionIdParam);
         } catch (NumberFormatException e) {
-            response.sendRedirect("view-exams?error=invalidExam");
+            response.sendRedirect("view-exams?error=invalidQuestion");
             return;
         }
 
-        ExamDAO examDAO = new ExamDAO();
         QuestionDAO questionDAO = new QuestionDAO();
+        boolean deleted = questionDAO.deleteQuestion(questionId, examId);
 
-        Exam exam = examDAO.getExamById(examId);
-
-        if (exam == null) {
-            response.sendRedirect("view-exams?error=invalidExam");
-            return;
-        }
-
-        List<Question> questions = questionDAO.getQuestionsByExamOrdered(examId);
-
-        request.setAttribute("questionList", questions);
-        request.setAttribute("exam", exam);
-
-        request.getRequestDispatcher("view-questions.jsp").forward(request, response);
+        response.sendRedirect("edit-exam?examId=" + examId + (deleted ? "&msg=questionDeleted" : "&error=questionDeleteFailed"));
     }
 }
