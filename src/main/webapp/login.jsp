@@ -52,6 +52,26 @@ margin-bottom:25px;
 color:#333;
 }
 
+.message{
+padding:10px 12px;
+margin-bottom:16px;
+border-radius:8px;
+font-size:14px;
+text-align:left;
+}
+
+.message.error{
+background:#fee2e2;
+color:#b91c1c;
+border:1px solid #fecaca;
+}
+
+.message.success{
+background:#dcfce7;
+color:#166534;
+border:1px solid #bbf7d0;
+}
+
 /* INPUTS */
 
 .input{
@@ -114,6 +134,25 @@ text-decoration:underline;
 <div class="main">
 
 <h2>User Login</h2>
+
+<%
+String error = request.getParameter("error");
+String msg = request.getParameter("msg");
+
+if ("invalid".equals(error)) {
+%>
+<div class="message error">Invalid email or password. Please try again.</div>
+<%
+} else if ("empty".equals(error)) {
+%>
+<div class="message error">Email and password are required.</div>
+<%
+} else if ("registered".equals(msg)) {
+%>
+<div class="message success">Registration successful. You can log in now.</div>
+<%
+}
+%>
 
 <form action="LoginServlet" method="post">
 

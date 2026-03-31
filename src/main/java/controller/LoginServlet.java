@@ -17,6 +17,19 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
+        if (email != null) {
+            email = email.trim();
+        }
+
+        if (password != null) {
+            password = password.trim();
+        }
+
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            response.sendRedirect("login.jsp?error=empty");
+            return;
+        }
+
         UserDAO dao = new UserDAO();
         User user = dao.login(email, password);
 
@@ -25,17 +38,16 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-            if(user.getRole().equals("admin")){
+            String role = user.getRole() != null ? user.getRole().trim() : "";
+
+            if ("admin".equalsIgnoreCase(role)) {
                 response.sendRedirect("admin-dashboard.jsp");
-                System.out.println("Directing to Admin Dashboard");
             } else {
                 response.sendRedirect("student-dashboard.jsp");
-                System.out.println("Directing to Student Dashboard");
             }
 
         } else {
             response.sendRedirect("login.jsp?error=invalid");
-            System.out.println("Error");
         }
     }
 }

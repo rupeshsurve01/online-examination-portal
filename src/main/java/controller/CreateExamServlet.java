@@ -16,11 +16,35 @@ public class CreateExamServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String title = request.getParameter("title");
-        int duration = Integer.parseInt(request.getParameter("duration"));
+        String durationParam = request.getParameter("duration");
         String category = request.getParameter("category");
 
+        if (title == null || title.trim().isEmpty()) {
+            response.sendRedirect("create-exam.jsp?error=invalidTitle");
+            return;
+        }
+
+        int duration;
+
+        try {
+            duration = Integer.parseInt(durationParam);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("create-exam.jsp?error=invalidDuration");
+            return;
+        }
+
+        if (duration <= 0) {
+            response.sendRedirect("create-exam.jsp?error=invalidDuration");
+            return;
+        }
+
         ExamDAO dao = new ExamDAO();
-        int examId = dao.createExam(title, duration, category);
+        int examId = dao.createExam(title.trim(), duration, category);
+
+        if (examId <= 0) {
+            response.sendRedirect("create-exam.jsp?error=createFailed");
+            return;
+        }
 
         response.sendRedirect("add-question.jsp?examId=" + examId);
     }

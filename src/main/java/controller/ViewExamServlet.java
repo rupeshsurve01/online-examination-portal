@@ -9,13 +9,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Exam;
+import model.User;
 
 @WebServlet("/view-exams")
 public class ViewExamServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        User user = session != null ? (User) session.getAttribute("user") : null;
+
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
         String category = request.getParameter("category");
         ExamDAO dao = new ExamDAO();
@@ -29,6 +39,9 @@ public class ViewExamServlet extends HttpServlet {
         request.setAttribute("categoryList", categories);
         request.setAttribute("selectedCategory", category);
 
-        request.getRequestDispatcher("view-exams.jsp").forward(request, response);
+        String targetPage = "admin".equalsIgnoreCase(user.getRole()) ? "check-exams.jsp" : "view-exams.jsp";
+
+        request.getRequestDispatcher(targetPage).forward(request, response);
+       
     }
 }

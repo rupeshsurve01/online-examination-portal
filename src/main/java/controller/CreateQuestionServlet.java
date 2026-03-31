@@ -1,8 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import dao.QuestionDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,22 +15,47 @@ public class CreateQuestionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException {
 
+		String examIdParam = request.getParameter("exam_id");
+		String questionText = request.getParameter("question");
+		String option1 = request.getParameter("option1");
+		String option2 = request.getParameter("option2");
+		String option3 = request.getParameter("option3");
+		String option4 = request.getParameter("option4");
+		String correctOptionParam = request.getParameter("correct_option");
+		int examId;
+		int correctOption;
+
+		try {
+			examId = Integer.parseInt(examIdParam);
+			correctOption = Integer.parseInt(correctOptionParam);
+		} catch (NumberFormatException e) {
+			response.sendRedirect("add-question.jsp?examId=" + examIdParam + "&error=invalidInput");
+			return;
+		}
+
+		if (questionText == null || questionText.trim().isEmpty()
+				|| option1 == null || option1.trim().isEmpty()
+				|| option2 == null || option2.trim().isEmpty()
+				|| option3 == null || option3.trim().isEmpty()
+				|| option4 == null || option4.trim().isEmpty()
+				|| correctOption < 1 || correctOption > 4) {
+			response.sendRedirect("add-question.jsp?examId=" + examId + "&error=invalidInput");
+			return;
+		}
+
 		Question q = new Question();
 
-		q.setExamId(Integer.parseInt(request.getParameter("exam_id")));
-		q.setQuestionText(request.getParameter("question"));
-		q.setOption1(request.getParameter("option1"));
-		q.setOption2(request.getParameter("option2"));
-		q.setOption3(request.getParameter("option3"));
-		q.setOption4(request.getParameter("option4"));
-		q.setCorrectOption(Integer.parseInt(request.getParameter("correct_option")));
+		q.setExamId(examId);
+		q.setQuestionText(questionText.trim());
+		q.setOption1(option1.trim());
+		q.setOption2(option2.trim());
+		q.setOption3(option3.trim());
+		q.setOption4(option4.trim());
+		q.setCorrectOption(correctOption);
 
 		QuestionDAO dao = new QuestionDAO();
 		dao.createQuestion(q);
 
-		int examId = Integer.parseInt(request.getParameter("exam_id"));
-
-		// redirect back to add-question page
 		response.sendRedirect("add-question.jsp?examId=" + examId);
 	}
 }

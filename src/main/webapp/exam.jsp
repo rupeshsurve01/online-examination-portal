@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ page import="java.util.Collections" %>
 <%@ page import="java.util.List" %>
+<%@ page import="model.Exam" %>
 <%@ page import="model.Question" %>
 
 <!DOCTYPE html>
@@ -119,9 +121,23 @@ box-shadow:0 6px 15px rgba(0,0,0,0.2);
 
 <body>
 
+<%
+Exam exam = (Exam) request.getAttribute("exam");
+List<Question> questions = (List<Question>) request.getAttribute("questions");
+
+if (exam == null) {
+    response.sendRedirect("view-exams?error=invalidExam");
+    return;
+}
+
+if (questions == null) {
+    questions = Collections.emptyList();
+}
+%>
+
 <script>
 
-let minutes = <%= ((model.Exam)request.getAttribute("exam")).getDuration() %>;
+let minutes = <%= exam.getDuration() %>;
 let seconds = minutes * 60;
 
 let timer = setInterval(function(){
@@ -150,14 +166,20 @@ let timer = setInterval(function(){
 
 <div class="exam-container">
 
-<%
-List<Question> questions = (List<Question>) request.getAttribute("questions");
-%>
-
 <form id="examForm" action="submit-exam" method="post">
 
-<input type="hidden" name="examId" value="<%= request.getParameter("examId") %>">
-<input type="hidden" name="rtime" value="<%= request.getParameter("rtime") %>">
+<input type="hidden" name="examId" value="<%= exam.getId() %>">
+
+<%
+if (questions.isEmpty()) {
+%>
+<div class="question-card">
+<p><b>No questions are available for this exam yet.</b></p>
+<p>Please contact the administrator or choose another exam.</p>
+</div>
+<%
+}
+%>
 
 <%
 for(Question q : questions){
@@ -189,7 +211,7 @@ for(Question q : questions){
 }
 %>
 
-<button class="submit-btn" type="submit">Submit Exam</button>
+<button class="submit-btn" type="submit" <%= questions.isEmpty() ? "disabled" : "" %>>Submit Exam</button>
 
 </form>
 

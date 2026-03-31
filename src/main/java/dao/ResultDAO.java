@@ -67,6 +67,39 @@ public class ResultDAO {
 
         return list;
     }
+
+    public List<Result> getAllResults() {
+
+        List<Result> list = new ArrayList<>();
+
+        try{
+
+            Connection conn = DBConnection.getConnection();
+
+            String sql = "SELECT r.*, e.title FROM results r JOIN exams e ON r.exam_id = e.id ORDER BY r.id DESC";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+
+                Result result = new Result();
+
+                result.setId(rs.getInt("id"));
+                result.setStudentId(rs.getInt("student_id"));
+                result.setExamId(rs.getInt("exam_id"));
+                result.setScore(rs.getInt("score"));
+                result.setExamTitle(rs.getString("title"));
+
+                list.add(result);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
     
     public int getAttemptedExamCount(int studentId) {
         int count = 0;
@@ -102,6 +135,22 @@ public class ResultDAO {
         return average;
     }
 
+    public double getAverageScoreAcrossAllStudents() {
+        double average = 0.0;
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "SELECT AVG(score) AS avg_score FROM results";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                average = rs.getDouble("avg_score");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return average;
+    }
+
     public String getBestCategory(int studentId) {
         String bestCategory = "N/A";
         try {
@@ -112,6 +161,24 @@ public class ResultDAO {
                          "ORDER BY avg_score DESC LIMIT 1";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                bestCategory = rs.getString("category");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return bestCategory;
+    }
+
+    public String getBestCategoryAcrossAllStudents() {
+        String bestCategory = "N/A";
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "SELECT e.category, AVG(r.score) AS avg_score " +
+                         "FROM results r JOIN exams e ON r.exam_id = e.id " +
+                         "GROUP BY e.category ORDER BY avg_score DESC LIMIT 1";
+            PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 bestCategory = rs.getString("category");

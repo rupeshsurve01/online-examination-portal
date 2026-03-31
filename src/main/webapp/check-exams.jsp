@@ -212,8 +212,8 @@ border-radius:16px;
 				<th>Title</th>
 				<th>Category</th>
 				<th>Duration</th>
-				<th>Edit</th>
-				<th>Delete</th>
+				<th>Add Questions</th>
+				<th>Preview</th>
 				<th>View</th>
 			</tr>
 			</thead>
@@ -229,17 +229,17 @@ border-radius:16px;
 					<td><span class="category-badge"><%= exam.getCategory() %></span></td>
 					<td class="duration-text"><%= exam.getDuration() %> minutes</td>
 					<td>
-					<a class="action-btn edit-btn" href="">
+					<a class="action-btn edit-btn" href="add-question.jsp?examId=<%= exam.getId() %>">
 					Edit Exam
 					</a>
 					</td>
 					<td>
-					<a class="action-btn delete-btn" href="">
-					Delete Exam
+					<a class="action-btn delete-btn" href="view-questions?examId=<%= exam.getId() %>">
+					Preview Questions
 					</a>
 					</td>
 					<td>
-					<a class="action-btn view-btn" href="">
+					<a class="action-btn view-btn" href="view-questions?examId=<%= exam.getId() %>">
 					View Exam
 					</a>
 					</td>

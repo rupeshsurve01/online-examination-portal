@@ -3,7 +3,6 @@ package controller;
 import dao.QuestionDAO;
 import dao.ResultDAO;
 import model.Question;
-import model.Result;
 import model.User;
 
 import jakarta.servlet.annotation.WebServlet;
@@ -18,10 +17,31 @@ public class SubmitExamServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int examId = Integer.parseInt(request.getParameter("examId"));
+        HttpSession session = request.getSession(false);
+        User user = session != null ? (User) session.getAttribute("user") : null;
+
+        if(user == null){
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        String examIdParam = request.getParameter("examId");
+        int examId;
+
+        try {
+            examId = Integer.parseInt(examIdParam);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("view-exams?error=invalidExam");
+            return;
+        }
 
         QuestionDAO dao = new QuestionDAO();
         List<Question> questions = dao.getQuestionsByExam(examId);
+
+        if (questions == null || questions.isEmpty()) {
+            response.sendRedirect("view-exams?error=noQuestions");
+            return;
+        }
 
         int score = 0;
 
@@ -31,7 +51,13 @@ public class SubmitExamServlet extends HttpServlet {
 
             if(answer != null){
 
-                int selected = Integer.parseInt(answer);
+                int selected;
+
+                try {
+                    selected = Integer.parseInt(answer);
+                } catch (NumberFormatException e) {
+                    continue;
+                }
 
                 if(selected == q.getCorrectOption()){
                     score++;
@@ -39,25 +65,11 @@ public class SubmitExamServlet extends HttpServlet {
             }
         }
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-
-        if(user == null){
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
         int studentId = user.getId();
 
         ResultDAO resultDAO = new ResultDAO();
 
         resultDAO.saveResult(studentId, examId, score);
-
-        List<Result> results = resultDAO.getResultsByStudent(studentId);
-
-        // Send to JSP
-        request.setAttribute("resultList", results);
-
-        request.getRequestDispatcher("results.jsp").forward(request,response);
+        response.sendRedirect("view-results?msg=submitted");
     }
 }

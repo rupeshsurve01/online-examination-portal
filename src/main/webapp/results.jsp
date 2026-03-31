@@ -138,9 +138,29 @@ box-shadow:0 5px 12px rgba(0,0,0,0.15);
 
 <%
 List<Result> results = (List<Result>) request.getAttribute("resultList");
+String pageTitle = request.getAttribute("pageTitle") != null ? (String) request.getAttribute("pageTitle") : "Your Results";
+String backLink = request.getAttribute("backLink") != null ? (String) request.getAttribute("backLink") : "student-dashboard.jsp";
+String backLabel = request.getAttribute("backLabel") != null ? (String) request.getAttribute("backLabel") : "Back to Dashboard";
+String msg = request.getParameter("msg");
 %>
 
-<h2>Your Results</h2>
+<h2><%= pageTitle %></h2>
+
+<%
+if ("submitted".equals(msg)) {
+%>
+<div class="result-card" style="margin-bottom:20px; border-left:4px solid #22c55e;">
+    Your exam was submitted successfully.
+</div>
+<%
+} else if ("alreadyAttempted".equals(msg)) {
+%>
+<div class="result-card" style="margin-bottom:20px; border-left:4px solid #f59e0b;">
+    This exam has already been submitted, so a duplicate result was not saved.
+</div>
+<%
+}
+%>
 
 <%
 int examCount = request.getAttribute("examCount") != null ? (Integer) request.getAttribute("examCount") : 0;
@@ -202,7 +222,7 @@ for(Result r : results){
 
 </div>
 
-<a class="back-btn" href="student-dashboard.jsp">Back to Dashboard</a>
+<a class="back-btn" href="<%= backLink %>"><%= backLabel %></a>
 
 </div>
 

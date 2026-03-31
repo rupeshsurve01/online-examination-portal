@@ -15,8 +15,8 @@ import model.Exam;
 import model.Question;
 import model.User;
 
-@WebServlet("/start-exam")
-public class StartExamServlet extends HttpServlet {
+@WebServlet("/view-questions")
+public class ViewQuestionsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,11 +26,6 @@ public class StartExamServlet extends HttpServlet {
 
         if (user == null) {
             response.sendRedirect("login.jsp");
-            return;
-        }
-
-        if ("admin".equalsIgnoreCase(user.getRole())) {
-            response.sendRedirect("view-exams");
             return;
         }
 
@@ -44,10 +39,9 @@ public class StartExamServlet extends HttpServlet {
             return;
         }
 
-        QuestionDAO questionDAO = new QuestionDAO();
         ExamDAO examDAO = new ExamDAO();
+        QuestionDAO questionDAO = new QuestionDAO();
 
-        List<Question> questions = questionDAO.getQuestionsByExam(examId);
         Exam exam = examDAO.getExamById(examId);
 
         if (exam == null) {
@@ -55,9 +49,11 @@ public class StartExamServlet extends HttpServlet {
             return;
         }
 
-        request.setAttribute("questions", questions);
+        List<Question> questions = questionDAO.getQuestionsByExam(examId);
+
+        request.setAttribute("questionList", questions);
         request.setAttribute("exam", exam);
 
-        request.getRequestDispatcher("exam.jsp").forward(request, response);
+        request.getRequestDispatcher("view-questions.jsp").forward(request, response);
     }
 }

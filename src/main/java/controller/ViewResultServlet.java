@@ -19,22 +19,31 @@ public class ViewResultServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        HttpSession session = request.getSession(false);
+        User user = session != null ? (User) session.getAttribute("user") : null;
+
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
         int studentId = user.getId();
 
         ResultDAO dao = new ResultDAO();
 
-        List<Result> results = dao.getResultsByStudent(studentId);
-        int examCount = dao.getAttemptedExamCount(studentId);
-        double averageScore = dao.getAverageScore(studentId);
-        String bestCategory = dao.getBestCategory(studentId);
+        boolean isAdmin = "admin".equalsIgnoreCase(user.getRole());
+        List<Result> results = isAdmin ? dao.getAllResults() : dao.getResultsByStudent(studentId);
+        int examCount = isAdmin ? results.size() : dao.getAttemptedExamCount(studentId);
+        double averageScore = isAdmin ? dao.getAverageScoreAcrossAllStudents() : dao.getAverageScore(studentId);
+        String bestCategory = isAdmin ? dao.getBestCategoryAcrossAllStudents() : dao.getBestCategory(studentId);
 
         request.setAttribute("resultList", results);
         request.setAttribute("examCount", examCount);
         request.setAttribute("averageScore", averageScore);
         request.setAttribute("bestCategory", bestCategory);
+        request.setAttribute("pageTitle", isAdmin ? "All Results" : "Your Results");
+        request.setAttribute("backLink", isAdmin ? "admin-dashboard.jsp" : "student-dashboard.jsp");
+        request.setAttribute("backLabel", isAdmin ? "Back to Admin Dashboard" : "Back to Dashboard");
 
         request.getRequestDispatcher("results.jsp").forward(request,response);
     }

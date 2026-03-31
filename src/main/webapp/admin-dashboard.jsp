@@ -5,7 +5,7 @@
 <%
 User user = (User) session.getAttribute("user");
 
-if(user == null){
+if(user == null || !"admin".equalsIgnoreCase(user.getRole())){
     response.sendRedirect("login.jsp");
     return;
 }
@@ -113,13 +113,13 @@ margin-bottom:10px;
 
 <div class="card">
 <span>📝</span>
-<a href="check-exams.jsp">View Exams</a>
+<a href="view-exams">Check Exams</a>
 </div>
 
 
 <div class="card">
 <span>📊</span>
-<a href="view-all-results">View Results</a>
+<a href="view-results">View Results</a>
 </div>
 
 <div class="card">

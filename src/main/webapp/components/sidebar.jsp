@@ -4,8 +4,9 @@
 <%
 User user = (User) session.getAttribute("user");
 String dashboardLink = "student-dashboard.jsp";
+boolean adminUser = user != null && "admin".equalsIgnoreCase(user.getRole());
 
-if (user != null && "admin".equalsIgnoreCase(user.getRole())) {
+if (adminUser) {
     dashboardLink = "admin-dashboard.jsp";
 }
 %>
@@ -44,6 +45,6 @@ margin-top:10px;
 
 <div class="sidebar">
     <a href="<%= dashboardLink %>">Dashboard</a>
-    <a href="view-exams">Available Exams</a>
-    <a href="view-results">My Results</a>
+    <a href="view-exams"><%= adminUser ? "Manage Exams" : "Available Exams" %></a>
+    <a href="view-results"><%= adminUser ? "All Results" : "My Results" %></a>
 </div>
