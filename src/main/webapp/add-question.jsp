@@ -104,6 +104,11 @@ transform:translateY(-2px);
 box-shadow:0 6px 15px rgba(0,0,0,0.15);
 }
 
+button a{
+	text-decoration: none;
+	color: white;
+}
+
 /* ANIMATION */
 
 @keyframes fadeIn{
@@ -160,11 +165,12 @@ if(examParam != null){
 
 <button type="submit">Add Question</button>
 
+<button><a href="view-exams">Create Exam</a></button>
+
 </form>
 
 </div>
 
-<jsp:include page="components/footer.jsp"/>
 </body>
 </html>
 

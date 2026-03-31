@@ -112,9 +112,10 @@ margin-bottom:10px;
 </div>
 
 <div class="card">
-<span>➕</span>
-<a href="add-question.jsp">Add Question</a>
+<span>📝</span>
+<a href="check-exams.jsp">View Exams</a>
 </div>
+
 
 <div class="card">
 <span>📊</span>
