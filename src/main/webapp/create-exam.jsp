@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="model.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -114,9 +115,32 @@ transform:translateY(0);
 
 <body>
 
+<%
+User user = (User) session.getAttribute("user");
+
+if(user == null || !"admin".equalsIgnoreCase(user.getRole())){
+    response.sendRedirect("login.jsp");
+    return;
+}
+
+String error = request.getParameter("error");
+%>
+
 <div class="container">
 
 <h2>Create Exam</h2>
+
+<%
+if ("invalidTitle".equals(error) || "invalidDuration".equals(error) || "createFailed".equals(error)) {
+%>
+<p style="margin-bottom:16px; color:#b91c1c; font-weight:600;">
+<%= "invalidTitle".equals(error) ? "Please enter a valid exam title." :
+    "invalidDuration".equals(error) ? "Please enter a duration greater than 0." :
+    "Exam creation failed. Please try again." %>
+</p>
+<%
+}
+%>
 
 <form action="create-exam" method="post">
 
@@ -124,7 +148,7 @@ transform:translateY(0);
 <input type="text" name="title" placeholder="Enter exam title" required>
 
 <label>Duration (minutes)</label>
-<input type="number" name="duration" placeholder="Enter exam duration" required>
+<input type="number" name="duration" placeholder="Enter exam duration" min="1" required>
 
 <label>Category</label>
 <select name="category" required>

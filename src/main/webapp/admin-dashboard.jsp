@@ -112,10 +112,9 @@ margin-bottom:10px;
 </div>
 
 <div class="card">
-<span>📝</span>
+<span>📑</span>
 <a href="view-exams">Check Exams</a>
 </div>
-
 
 <div class="card">
 <span>📊</span>

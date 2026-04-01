@@ -10,6 +10,11 @@ if(user == null){
     response.sendRedirect("login.jsp");
     return;
 }
+
+if("admin".equalsIgnoreCase(user.getRole())){
+    response.sendRedirect("admin-dashboard.jsp");
+    return;
+}
 %>
 
 <!DOCTYPE html>

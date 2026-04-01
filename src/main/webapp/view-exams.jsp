@@ -163,9 +163,20 @@ box-shadow:0 4px 10px rgba(0,0,0,0.15);
 List<Exam> exams = (List<Exam>) request.getAttribute("examList");
 List<String> categories = (List<String>) request.getAttribute("categoryList");
 String selectedCategory = (String) request.getAttribute("selectedCategory");
+String error = request.getParameter("error");
 %>
 
 <h2>Available Exams</h2>
+
+<%
+if ("invalidExam".equals(error) || "noQuestions".equals(error)) {
+%>
+<div style="margin-bottom:18px; padding:12px 14px; border-radius:12px; background:#fee2e2; color:#b91c1c; font-weight:600;">
+<%= "invalidExam".equals(error) ? "The selected exam could not be found." : "This exam does not have any questions yet." %>
+</div>
+<%
+}
+%>
 
 <form class="filter-form" method="get" action="view-exams">
     <label>Filter by category:</label>
@@ -197,7 +208,7 @@ String selectedCategory = (String) request.getAttribute("selectedCategory");
 </tr>
 
 <%
-if(exams != null){
+if(exams != null && !exams.isEmpty()){
 for(Exam exam : exams){
 %>
 
@@ -215,6 +226,14 @@ Start Exam
 
 <%
 }
+} else {
+%>
+
+<tr>
+<td colspan="5">No exams are available right now.</td>
+</tr>
+
+<%
 }
 %>
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="model.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -129,6 +130,13 @@ transform:translateY(0);
 <body>
 
 <%
+User user = (User) session.getAttribute("user");
+
+if(user == null || !"admin".equalsIgnoreCase(user.getRole())){
+    response.sendRedirect("login.jsp");
+    return;
+}
+
 String examParam = request.getParameter("examId");
 int examId = 0;
 
@@ -139,50 +147,15 @@ if(examParam != null){
         examId = 0;
     }
 }
-%>
 
-<div class="container">
-
-<h2>Add Question</h2>
-
-<%
-String error = request.getParameter("error");
-if ("invalidInput".equals(error)) {
-%>
-<p style="margin-bottom:16px; color:#b91c1c; font-weight:600;">Please fill in every field and choose a correct option from 1 to 4.</p>
-<%
+if(examId > 0){
+    response.sendRedirect("edit-exam?examId=" + examId);
+    return;
 }
+
+response.sendRedirect("view-exams");
+return;
 %>
-
-<form action="create-question" method="post">
-
-<input type="hidden" name="exam_id" value="<%= examId %>">
-
-<label>Question</label>
-<textarea rows="4" name="question" placeholder="Enter your question" required></textarea>
-
-<label>Option 1</label>
-<input type="text" name="option1" placeholder="Option 1" required>
-
-<label>Option 2</label>
-<input type="text" name="option2" placeholder="Option 2" required>
-
-<label>Option 3</label>
-<input type="text" name="option3" placeholder="Option 3" required>
-
-<label>Option 4</label>
-<input type="text" name="option4" placeholder="Option 4" required>
-
-<label>Correct Option (1-4)</label>
-<input type="number" name="correct_option" min="1" max="4" required>
-
-<button type="submit">Add Question</button>
-
-<button type="button" onclick="window.location.href='view-exams'">Back to Exams</button>
-
-</form>
-
-</div>
 
 </body>
 </html>
